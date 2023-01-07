@@ -2,6 +2,7 @@ import React, { memo } from 'react'
 import type { FC, ReactNode } from 'react'
 import { useAppSelector, useAppDispatch, shallowEqualApp } from '@/hooks/redux'
 import { addCountAction } from '@/store/modules/counter'
+import { HomeWrapper } from './style'
 
 interface IProps {
   children?: ReactNode
@@ -20,11 +21,11 @@ const Home: FC<IProps> = () => {
     dispatch(addCountAction(num))
   }
   return (
-    <div>
-      <h1>Home</h1>
-      <p>当前计数: {count}</p>
+    <HomeWrapper>
+      <h1>Hello react</h1>
+      <h2>当前计数: {count}</h2>
       <button onClick={() => handleClick(5)}>+5</button>
-    </div>
+    </HomeWrapper>
   )
 }
 

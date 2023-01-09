@@ -4,8 +4,6 @@ import React, { Suspense } from 'react'
 import AppHeader from './components/app-header'
 import AppFooter from './components/app-footer'
 
-console.log('---')
-
 function App() {
   return (
     <div>

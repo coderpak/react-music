@@ -26,7 +26,6 @@ ins {
 
 a {
   text-decoration: none;
-  color: #333;
 }
 
 img {
@@ -40,4 +39,8 @@ li {
 
 button {
   outline: none;
+}
+
+* {
+  box-sizing: border-box;
 }

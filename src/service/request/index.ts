@@ -28,7 +28,8 @@ class AxiosHttpRequest {
         return config.data
       },
       (err) => {
-        console.log(err, '全局响应失败拦截')
+        console.log('全局响应失败拦截')
+        throw err
       }
     )
 
@@ -48,12 +49,18 @@ class AxiosHttpRequest {
       config = config.interceptors.requestSuccessFn(config)
     }
     return new Promise<T>((resolve, reject) => {
-      this.instance.request<any, T>(config).then((res) => {
-        if (config.interceptors?.responseSuccessFn) {
-          res = config.interceptors.responseSuccessFn(res)
-        }
-        resolve(res)
-      })
+      this.instance
+        .request<any, T>(config)
+        .then((res) => {
+          if (config.interceptors?.responseSuccessFn) {
+            res = config.interceptors.responseSuccessFn(res)
+          }
+          resolve(res)
+        })
+        .catch((err) => {
+          console.log('instance err')
+          reject(err)
+        })
     })
   }
 

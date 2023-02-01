@@ -61,7 +61,7 @@ const routes: RouteObject[] = [
     element: <Friend />
   },
   {
-    path: '/friend',
+    path: '/download',
     element: <Download />
   }
 ]

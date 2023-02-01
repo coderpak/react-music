@@ -12,7 +12,8 @@ export const NavbarWrapper = styled.div`
         padding: 2px 13px;
         margin: 7px 17px 0;
         color: #fff;
-        &:hover {
+        &:hover,
+        &.active {
           background-color: #9b0909;
           border-radius: 20px;
         }

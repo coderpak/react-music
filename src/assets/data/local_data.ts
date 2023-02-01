@@ -36,6 +36,13 @@ export const footerImages = [
   }
 ]
 
+export const staticBannerImgs = [
+  { imageUrl: 'http://p1.music.126.net/nLSCDqERnImk9eqaISbloA==/109951168275158224.jpg' },
+  { imageUrl: 'http://p1.music.126.net/M0UU_OPw1ip2aMSJjn8Nmg==/109951168275161371.jpg' },
+  { imageUrl: 'http://p1.music.126.net/Gu2Qkdbo0Qr4ryp-HoERbw==/109951168275290026.jpg' },
+  { imageUrl: 'http://p1.music.126.net/9vrNHPnO5RlaZuUmfEMMEQ==/109951168275285397.jpg' }
+]
+
 // discover中的数据
 export const discoverMenu = [
   {

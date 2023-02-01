@@ -3,7 +3,6 @@ import routes from '@/router'
 import React, { Suspense } from 'react'
 import AppHeader from './components/app-header'
 import AppFooter from './components/app-footer'
-
 function App() {
   return (
     <div>

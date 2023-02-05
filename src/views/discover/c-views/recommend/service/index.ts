@@ -26,3 +26,12 @@ export function getRankingDetail(id: number) {
     }
   })
 }
+
+export function getArtistList(limit = 30) {
+  return request1.get({
+    url: '/artist/list',
+    params: {
+      limit
+    }
+  })
+}

@@ -12,14 +12,7 @@ const AppFooter: FC<IProps> = () => {
   function toRecommend() {
     navigate('/discover/recommend')
   }
-  return (
-    <AppFooterWrapper>
-      <button className="text">AppFooterWrapper</button>
-      <Button type="primary" onClick={toRecommend}>
-        Primary Button
-      </Button>
-    </AppFooterWrapper>
-  )
+  return <AppFooterWrapper>AppFooter</AppFooterWrapper>
 }
 
 export default memo(AppFooter)

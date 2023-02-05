@@ -71,7 +71,7 @@ export const TopRankingItemWrapper = styled.div`
         .more {
           cursor: pointer;
           margin-right: 10px;
-          &:hover{
+          &:hover {
             text-decoration: underline;
           }
         }
@@ -112,10 +112,9 @@ export const TopRankingItemWrapper = styled.div`
           position: relative;
           top: 2px;
         }
-        }
-        .coll {
-          background-position: -297px -268px;
-        }
+      }
+      .coll {
+        background-position: -297px -268px;
       }
     }
   }

@@ -1,5 +1,6 @@
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit'
 import {
+  getArtistList,
   getHotRecommendPlaylist,
   getNewAlbum,
   getRankingDetail,
@@ -11,13 +12,15 @@ interface IInitalState {
   hotRecommendPlaylist: any[]
   newAlbumList: any[]
   rankingDataList: any[]
+  settledSingers: any[]
 }
 
 const initialState: IInitalState = {
   banner: [],
   hotRecommendPlaylist: [],
   newAlbumList: [],
-  rankingDataList: []
+  rankingDataList: [],
+  settledSingers: []
 }
 
 export const fetchRecommendAction = createAsyncThunk('recommend', async (_, { dispatch }) => {
@@ -30,6 +33,9 @@ export const fetchRecommendAction = createAsyncThunk('recommend', async (_, { di
   getNewAlbum().then((res) => {
     dispatch(changeNewAlbumListAction(res.albums))
   })
+  getArtistList(5).then((res) => {
+    dispatch(changeSettledSingersAction(res.artists))
+  })
 })
 
 const rankingIds = [19723756, 3779629, 2884035]
@@ -41,7 +47,6 @@ export const fetchRankingDataAction = createAsyncThunk('rankingData', (_, { disp
   Promise.all(promiseArr).then((res) => {
     const rankingDataList = res.map((item) => item.playlist)
     dispatch(changeRankingDataListAction(rankingDataList))
-    console.log(rankingDataList)
   })
 })
 
@@ -60,6 +65,9 @@ const recommendSlice = createSlice({
     },
     changeRankingDataListAction(state, action) {
       state.rankingDataList = action.payload
+    },
+    changeSettledSingersAction(state, action) {
+      state.settledSingers = action.payload
     }
   }
 })
@@ -68,6 +76,7 @@ export const {
   changeBannerAction,
   changeHotRecommendPlaylistAction,
   changeNewAlbumListAction,
-  changeRankingDataListAction
+  changeRankingDataListAction,
+  changeSettledSingersAction
 } = recommendSlice.actions
 export default recommendSlice.reducer

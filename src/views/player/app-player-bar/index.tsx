@@ -6,7 +6,7 @@ import { message, Slider } from 'antd'
 import { shallowEqualApp, useAppDispatch, useAppSelector } from '@/hooks/redux'
 import { changeImgSize, formatTime } from '@/utils/format'
 import { getSongUrl } from '@/utils/handle-player'
-import { changeLyricIndexAction } from '../store'
+import { changeLyricIndexAction, changePlayMode, changeSongThunk } from '../store'
 
 interface IProps {
   children?: ReactNode
@@ -14,11 +14,12 @@ interface IProps {
 
 const AppPlayerBar: FC<IProps> = () => {
   const dispatch = useAppDispatch()
-  const { currentSong, lyric, lyricIndex } = useAppSelector(
+  const { currentSong, lyric, lyricIndex, playMode } = useAppSelector(
     (state) => ({
       currentSong: state.player.currentSong,
       lyric: state.player.lyric,
-      lyricIndex: state.player.lyricIndex
+      lyricIndex: state.player.lyricIndex,
+      playMode: state.player.playMode
     }),
     shallowEqualApp
   )
@@ -32,20 +33,20 @@ const AppPlayerBar: FC<IProps> = () => {
 
   useEffect(() => {
     audioRef.current!.src = getSongUrl(currentSong.id)
-    // audioRef
-    //   .current!.play()
-    //   .then(() => {
-    //     setIsPlaying(true)
-    //     console.log('播放成功')
-    //   })
-    //   .catch(() => {
-    //     console.log('播放失败')
-    //   })
+    audioRef
+      .current!.play()
+      .then(() => {
+        setIsPlaying(true)
+        console.log('播放成功')
+      })
+      .catch(() => {
+        console.log('播放失败')
+      })
 
     setDuration(currentSong.dt)
   }, [currentSong])
 
-  // 事件处理
+  // 事件处理 暂停播放
   function handlePlayBtnClick() {
     isPlaying
       ? audioRef.current?.pause()
@@ -54,6 +55,20 @@ const AppPlayerBar: FC<IProps> = () => {
           setIsPlaying(false)
         })
     setIsPlaying(!isPlaying)
+  }
+
+  // 切换歌曲
+  function handleSongchange(isNext = true) {
+    dispatch(changeSongThunk(isNext))
+  }
+
+  // 切换播放模式
+  function handlePlayModeChange() {
+    let newMode = playMode + 1
+    if (newMode > 2) {
+      newMode = 0
+    }
+    dispatch(changePlayMode(newMode))
   }
 
   // 点击进度条
@@ -107,13 +122,28 @@ const AppPlayerBar: FC<IProps> = () => {
       duration: 0
     })
   }
+
+  // 歌曲播放end
+  function handleAudioEnd() {
+    if (playMode === 2) {
+      audioRef.current?.play().catch((e) => console.log('播放失败'))
+    } else {
+      handleSongchange(true)
+    }
+  }
   return (
     <AppPlayerBarWrapper className="sprite_playbar">
       <div className="content wrap-v2">
         <BarControl isPlaying={isPlaying}>
-          <button className="btn sprite_playbar prev"></button>
+          <button
+            className="btn sprite_playbar prev"
+            onClick={() => handleSongchange(false)}
+          ></button>
           <button className="btn sprite_playbar play" onClick={handlePlayBtnClick}></button>
-          <button className="btn sprite_playbar next"></button>
+          <button
+            className="btn sprite_playbar next"
+            onClick={() => handleSongchange(true)}
+          ></button>
         </BarControl>
         <BarPlayerInfo>
           <Link to="/">
@@ -121,7 +151,7 @@ const AppPlayerBar: FC<IProps> = () => {
           </Link>
           <div className="info">
             <div className="song">
-              <div className="song-name">{currentSong?.al?.name}</div>
+              <div className="song-name">{currentSong?.name}</div>
               <div className="singer-name">{currentSong?.ar?.[0]?.name}</div>
             </div>
             <div className="progress">
@@ -140,7 +170,7 @@ const AppPlayerBar: FC<IProps> = () => {
             </div>
           </div>
         </BarPlayerInfo>
-        <BarOperator>
+        <BarOperator playMode={playMode}>
           <div className="left">
             <button className="btn pip"></button>
             <button className="btn sprite_playbar favor"></button>
@@ -148,12 +178,12 @@ const AppPlayerBar: FC<IProps> = () => {
           </div>
           <div className="right sprite_playbar">
             <button className="btn sprite_playbar volume"></button>
-            <button className="btn sprite_playbar loop"></button>
+            <button className="btn sprite_playbar loop" onClick={handlePlayModeChange}></button>
             <button className="btn sprite_playbar playlist"></button>
           </div>
         </BarOperator>
       </div>
-      <audio ref={audioRef} onTimeUpdate={handleTimeUpdata}></audio>
+      <audio ref={audioRef} onTimeUpdate={handleTimeUpdata} onEnded={handleAudioEnd}></audio>
     </AppPlayerBarWrapper>
   )
 }
